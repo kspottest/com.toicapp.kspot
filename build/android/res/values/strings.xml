@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="app_name" formatted="false">com.toicapp.kspot</string>
+	<string name="welcome" formatted="false">Welcome to %s!</string>
+	<string name="forward" formatted="false">Forward</string>
+	<string name="back" formatted="false">Back</string>
+</resources>
