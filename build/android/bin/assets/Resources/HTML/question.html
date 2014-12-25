@@ -3,8 +3,6 @@
 <html>
 	<head>
 	  <meta charset="utf-8" />
-	  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-	   Remove this if you use the .htaccess -->
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	
 	  <title>質問</title>
@@ -26,12 +24,14 @@ function getUrlVars()
     return vars; 
 }
 var getParam=getUrlVars();
+var current=null;
 
-function movePage(page){
- 	location.href="question.html?id="+page;
- 	return true;
- }
- 
+function getPage(page){
+	if(page){
+		location.href="page.html?id="+page;
+	}
+}
+
  $(function() {
  	//jsonでページ＆選択肢をとってくる
  	var pageArray=[1,2,3];
@@ -40,29 +40,35 @@ function movePage(page){
  	var check_question=null;
  	
  	//ページ
+ 	current=getParam["id"];
  	$("#pageid").html(getParam["id"]);
  	//前・次
  	var prev=0;
  	var next=0;
  	var counter=0;
  	var temp=null; 
+ 	
+ 	current=parseInt(current);
  	$.each(pageArray, function() {
-		if(getParam["id"] == this && counter > 0){
+		if(current == this && counter > 0){
 			prev=counter;
 			temp=1;
 		}
-		if(temp && getParam["id"] != this){
+		if(temp && current != this){
 			next=this;
 			temp=null;
 		}
 		counter++;
  	});
- 	alert(prev+" "+next);
+ 	if(current < pageArray.length){
+ 		next=current+1;
+ 	}
+
  	if(prev > 0){
- 		$("#prev").html("<a href=\"#\" onClick=\"movePage("+prev+");\">前のページ</a>");
+ 		$("#prev").html("<a href=\"#\" onClick=\"getPage("+prev+");\" id=\"getpage\">前のページ</a>");
  	}
  	if(next > 0){
- 		$("#next").html("<a href=\"#\" onClick=\"movePage("+next+");\">次のページ</a>");
+ 		$("#next").html("<a href=\"#\" onClick=\"getPage("+next+");\" id=\"getpage\">次のページ</a>");
  	}
 
  	//選択するまでは回答できない
@@ -76,6 +82,7 @@ function movePage(page){
 	var kaito=null;
 	$("[id^=q_]").click(function(){
 		$("#answer").removeAttr("disabled");
+		$("[id^=q_]").css("color","black");
 		$(this).css("color","red");
 		kaito = $(this).text();
 		$("#a").val(kaito);
@@ -93,15 +100,26 @@ function movePage(page){
 	
 });
 
+var video = document.getElementById('video');
+video.addEventListener('click',function(){
+  document.play();
+},false);
 </script>
 
 ページ<div id="pageid"></div><br>
+
+動画テスト
+<video id="video" autobuffer height="240" width="360">
+<source src="http://hakuhin.jp/download/js/video/sample_00.mp4">
+</video>
+
+
 <div id="question"></div>
 <form>
 	
 <br /><br />
 <span id="a"><input type="hidden" name="a" value=""></span>
-<div id="answer"><input type="button" value="回答する"></div>
+<input type="button" value="回答する" id="answer">
 </form>
 
 <div id="prev"></div>
