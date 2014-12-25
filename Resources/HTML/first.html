@@ -3,16 +3,35 @@
 <html>
 	<head>
 	  <meta charset="utf-8" />
-	  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-	   Remove this if you use the .htaccess -->
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	
 	  <title>スタート画面</title>
 	
 	</head>
 <body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+	$(function(){
+		$("#s").click(function(){
+		InAppBilling.addEventListener(InAppBilling.PURCHASE_STATE_CHANGED_EVENT, function(e){
+	 
+		    NotifyMe('PURCHASE STATE CHANGED CALLED ' + e.signedData + ' ' + e.signature+'\n'+ 'SECURITY RESULT ' + e.result);
+		 
+		    Ti.API.info('PURCHASE STATE CHANGED CALLED');
+		    Ti.API.info('Signature Verification Result:\n' + VerificationString(e.result));
+		    Ti.API.info('Signed Data:\n' + e.signedData);
+		 
+		    if (e.signedData != null) {
+		    }
+		 });
+	 });
+ });
+</script>
 
 初めての方へ
+
+<button id=s>課金する</button>
+
 
 </body>
 </html>
